@@ -1,6 +1,5 @@
-package com.flashcard.flash_app.dto.request;
+package com.flashcard.flash_app.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,8 +10,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdateRequest {
+public class UserResponse {
+    String id;
     String username;
-    String password;
-    LocalDateTime updated_at = LocalDateTime.now();
+    String email;
+    LocalDateTime created_at;
+    LocalDateTime updated_at;
 }
