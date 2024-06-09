@@ -1,9 +1,6 @@
 package com.flashcard.flash_app.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -22,4 +19,8 @@ public class Card {
     String image = null;
     LocalDateTime created_at;
     LocalDateTime updated_at;
+
+    @ManyToOne
+    @JoinColumn(name="deck_id", nullable=false)
+    Deck deck;
 }

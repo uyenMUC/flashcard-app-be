@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/decks")
+@RequestMapping("/deck")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DeckController {
@@ -42,22 +42,20 @@ public class DeckController {
         return apiResponse;
     }
 
-//    @PostMapping("rating/{user_id}/{deck_id}")
-//    ApiResponse<List<DeckResponse>> rateDeck(@PathVariable(name = "user_id") String user_id,
-//                                             @PathVariable(name = "deck_id") String deck_id) {
-//        ApiResponse<List<DeckResponse>> apiResponse = new ApiResponse<>();
-//        apiResponse.setResult(deckService.rateDeck(user_id, deck_id));
-//        return apiResponse;
-//    }
-
     @PutMapping("/{deck_id}")
-    DeckResponse updateDeck(@PathVariable String deck_id, @RequestBody DeckUpdateRequest request) {
-        return deckService.updateDeck(deck_id, request);
+    ApiResponse<DeckResponse> updateDeck(@PathVariable String deck_id, @RequestBody DeckUpdateRequest request) {
+        ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(deckService.updateDeck(deck_id, request));
+        return apiResponse;
     }
 
     @DeleteMapping("/{deck_id}")
-    String deleteUser(@PathVariable String deck_id) {
+    ApiResponse deleteUser(@PathVariable String deck_id) {
         deckService.deleteDeck(deck_id);
-        return "Deck has been deleted!";
+        ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
+        return apiResponse.builder()
+                .code(1000)
+                .message("Deck has been deleted!")
+                .build();
     }
 }

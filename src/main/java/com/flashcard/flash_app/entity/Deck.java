@@ -19,6 +19,8 @@ public class Deck {
     String id;
     String name;
     String description;
+    float rate = 0.0F;
+    Long numOfRatings = 0L;
     int status = 0; // 0: private, 1: public
     LocalDateTime created_at;
     LocalDateTime updated_at;
@@ -30,4 +32,7 @@ public class Deck {
 
     @OneToMany(mappedBy="deck")
     Set<Rating> ratings;
+
+    @OneToMany(mappedBy="deck")
+    Set<Card> cards;
 }

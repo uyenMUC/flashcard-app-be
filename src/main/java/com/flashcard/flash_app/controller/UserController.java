@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
@@ -29,7 +29,7 @@ public class UserController {
         return apiResponse;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     List<User> getAllUsers() {
         return userService.getAllUsers();
     }
