@@ -4,6 +4,7 @@ import com.flashcard.flash_app.dto.request.AuthenticationRequest;
 import com.flashcard.flash_app.dto.request.IntrospectRequest;
 import com.flashcard.flash_app.dto.response.AuthenticationResponse;
 import com.flashcard.flash_app.dto.response.IntrospectResponse;
+import com.flashcard.flash_app.entity.User;
 import com.flashcard.flash_app.exception.AppException;
 import com.flashcard.flash_app.exception.ErrorCode;
 import com.flashcard.flash_app.repository.UserRepository;
@@ -66,23 +67,23 @@ public class AuthenticationService {
         if (!authenticated)
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
-        var token = generateToken(request.getEmail());
+        var token = generateToken(user);
         return AuthenticationResponse.builder()
                 .token(token)
                 .authenticated(true)
                 .build();
     }
 
-    private String generateToken(String email) {
+    private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
         JWTClaimsSet jwtClaimsSet = new  JWTClaimsSet.Builder()
-                .subject(email)
+                .subject(user.getUsername())
                 .issuer("flashcard.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
                 ))
-//                .claim("customClaim", "claim")
+                .claim("user_id", user.getId())
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 

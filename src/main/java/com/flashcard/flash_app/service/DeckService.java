@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,14 +30,19 @@ public class DeckService {
     UserRepository userRepository;
     DeckMapper deckMapper;
 
-    public DeckResponse createDeck(DeckCreateRequest request) {
+    public DeckResponse createDeck(String user_id, DeckCreateRequest request) {
         Deck deck = deckMapper.toDeck(request);
-        deck.setUser(userRepository.getById(request.getUser_id()));
+        deck.setUser(userRepository.getById(user_id));
         return deckMapper.toDeckResponse(deckRepository.save(deck));
     }
 
-    public DeckResponse getDeckById(String deck_id) {
-        Deck deck = deckRepository.getById(deck_id);
+    public DeckResponse getDeckById(String user_id, String deck_id) {
+        Deck deck = deckRepository.getDeckById(deck_id)
+                .orElseThrow(() -> new RuntimeException("Deck not found"));
+
+        if (deck.getStatus() == 0 && !isAuthorized(user_id, deck_id)) {
+            throw new RuntimeException("Not authorized");
+        }
         return deckMapper.toDeckResponse(deck);
     }
 
@@ -44,15 +51,26 @@ public class DeckService {
         return deckMapper.toDeckResponses(decks);
     }
 
-    public DeckResponse updateDeck(String deck_id, DeckUpdateRequest request) {
+    public DeckResponse updateDeck(String user_id, String deck_id, DeckUpdateRequest request) {
+        if (!isAuthorized(user_id, deck_id)) {
+            throw new RuntimeException("Not authorized");
+        }
         Deck deck = deckRepository.getDeckById(deck_id)
                 .orElseThrow(() -> new RuntimeException("Deck not found"));
         deckMapper.updateDeck(deck, request);
         return deckMapper.toDeckResponse(deckRepository.save(deck));
     }
 
-    public void deleteDeck(String deck_id) {
+    public void deleteDeck(String user_id, String deck_id) {
+        if (!isAuthorized(user_id, deck_id)) {
+            throw new RuntimeException("Not authorized");
+        }
         deckRepository.deleteById(deck_id);
+    }
+
+    private boolean isAuthorized(String user_id, String deck_id) {
+        Deck deck = deckRepository.getById(deck_id);
+        return deck.getUser().getId().equals(user_id);
     }
 
 }

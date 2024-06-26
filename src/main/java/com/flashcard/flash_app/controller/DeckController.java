@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,20 +25,29 @@ public class DeckController {
 
     @PostMapping
     ApiResponse<DeckResponse> createDeck(@RequestBody @Valid DeckCreateRequest request) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
+        String user_id = oauthToken.getToken().getClaim("user_id");
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(deckService.createDeck(request));
+        apiResponse.setResult(deckService.createDeck(user_id, request));
         return apiResponse;
     }
 
-    @GetMapping("deck_id/{deck_id}")
+    @GetMapping("/{deck_id}")
     ApiResponse<DeckResponse> getDeckById(@PathVariable String deck_id) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
+        String user_id = oauthToken.getToken().getClaim("user_id");
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(deckService.getDeckById(deck_id));
+        apiResponse.setResult(deckService.getDeckById(user_id, deck_id));
         return apiResponse;
     }
 
-    @GetMapping("user_id/{user_id}")
-    ApiResponse<List<DeckResponse>> getAllDecks(@PathVariable String user_id) {
+    @GetMapping("/all")
+    ApiResponse<List<DeckResponse>> getAllDecks() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
+        String user_id = oauthToken.getToken().getClaim("user_id");
         ApiResponse<List<DeckResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(deckService.getAllDecks(user_id));
         return apiResponse;
@@ -44,14 +55,20 @@ public class DeckController {
 
     @PutMapping("/{deck_id}")
     ApiResponse<DeckResponse> updateDeck(@PathVariable String deck_id, @RequestBody DeckUpdateRequest request) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
+        String user_id = oauthToken.getToken().getClaim("user_id");
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(deckService.updateDeck(deck_id, request));
+        apiResponse.setResult(deckService.updateDeck(user_id, deck_id, request));
         return apiResponse;
     }
 
     @DeleteMapping("/{deck_id}")
     ApiResponse deleteUser(@PathVariable String deck_id) {
-        deckService.deleteDeck(deck_id);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
+        String user_id = oauthToken.getToken().getClaim("user_id");
+        deckService.deleteDeck(user_id, deck_id);
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
         return apiResponse.builder()
                 .code(1000)

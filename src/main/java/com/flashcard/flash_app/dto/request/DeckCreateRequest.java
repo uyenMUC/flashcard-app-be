@@ -16,7 +16,6 @@ public class DeckCreateRequest {
     @NotEmpty(message = "DECK_NAME_EMPTY")
     String name;
     String description;
-    String user_id;
     int status;
     LocalDateTime created_at = LocalDateTime.now();
     LocalDateTime updated_at = LocalDateTime.now();
