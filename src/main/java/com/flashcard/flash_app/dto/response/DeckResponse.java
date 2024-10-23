@@ -5,7 +5,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -17,6 +18,6 @@ public class DeckResponse {
     String description;
     float rate;
     Long numOfRatings;
-    LocalDateTime created_at;
-    LocalDateTime updated_at;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 }

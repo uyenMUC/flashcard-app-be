@@ -3,7 +3,8 @@ package com.flashcard.flash_app.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

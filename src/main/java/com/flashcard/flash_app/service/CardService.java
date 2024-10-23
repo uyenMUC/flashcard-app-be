@@ -25,28 +25,28 @@ public class CardService {
 
     public CardResponse createCard(CardCreateRequest request) {
         Card card = cardMapper.toCard(request);
-        card.setDeck(deckRepository.getById(request.getDeck_id()));
+        card.setDeck(deckRepository.getById(request.getDeckId()));
         return cardMapper.toCardResponse(cardRepository.save(card));
     }
 
-    public CardResponse getCardById(String card_id) {
-        Card card = cardRepository.getById(card_id);
+    public CardResponse getCardById(String cardId) {
+        Card card = cardRepository.getById(cardId);
         return cardMapper.toCardResponse(card);
     }
 
-    public List<CardResponse> getAllCards(String deck_id) {
-        List<Card> cards = cardRepository.findCardsByDeck(deckRepository.getById(deck_id));
+    public List<CardResponse> getAllCards(String deckId) {
+        List<Card> cards = cardRepository.findCardsByDeck(deckRepository.getById(deckId));
         return cardMapper.toCardResponses(cards);
     }
 
-    public CardResponse updateCard(String card_id, CardUpdateRequest request) {
-        Card card = cardRepository.getCardById(card_id)
+    public CardResponse updateCard(String cardId, CardUpdateRequest request) {
+        Card card = cardRepository.getCardById(cardId)
                 .orElseThrow(() -> new RuntimeException("Card not found"));
         cardMapper.updateCard(card, request);
         return cardMapper.toCardResponse(cardRepository.save(card));
     }
 
-    public void deleteCard(String card_id) {
-        cardRepository.deleteById(card_id);
+    public void deleteCard(String cardId) {
+        cardRepository.deleteById(cardId);
     }
 }

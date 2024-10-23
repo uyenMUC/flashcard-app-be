@@ -8,16 +8,17 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CardResponse {
     String id;
-    String front_text;
-    String back_text;
+    String frontText;
+    String backText;
     String image;
-    LocalDateTime created_at;
-    LocalDateTime updated_at;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 }

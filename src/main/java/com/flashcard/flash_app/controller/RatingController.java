@@ -17,12 +17,12 @@ public class RatingController {
 
     RatingService ratingService;
 
-    @PostMapping("/{user_id}/{deck_id}")
-    ApiResponse<DeckResponse> rateDeck(@PathVariable("user_id") String user_id,
-                                       @PathVariable("deck_id") String deck_id,
+    @PostMapping("/{userId}/{deckId}")
+    ApiResponse<DeckResponse> rateDeck(@PathVariable("userId") String userId,
+                                       @PathVariable("deckId") String deckId,
                                        @RequestBody RatingRequest request) {
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(ratingService.rateDeck(user_id, deck_id, request));
+        apiResponse.setResult(ratingService.rateDeck(userId, deckId, request));
         return apiResponse;
     }
 }

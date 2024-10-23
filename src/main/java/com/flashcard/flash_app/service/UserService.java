@@ -11,12 +11,10 @@ import com.flashcard.flash_app.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -44,19 +42,19 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserResponse getUser(String user_id) {
-        return userMapper.toUserResponse(userRepository.findById(user_id)
+    public UserResponse getUser(String userId) {
+        return userMapper.toUserResponse(userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found")));
     }
 
-    public UserResponse updateUser(String user_id, UserUpdateRequest request) {
-        User user = userRepository.findById(user_id)
+    public UserResponse updateUser(String userId, UserUpdateRequest request) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         userMapper.updateUser(user, request);
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-    public void deleteUser(String user_id) {
-        userRepository.deleteById(user_id);
+    public void deleteUser(String userId) {
+        userRepository.deleteById(userId);
     }
 }

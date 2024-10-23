@@ -10,7 +10,8 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class User {
@@ -20,8 +21,8 @@ public class User {
     String username;
     String email;
     String password;
-    LocalDateTime created_at;
-    LocalDateTime updated_at;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
     @OneToMany(mappedBy="user")
     Set<Deck> decks;

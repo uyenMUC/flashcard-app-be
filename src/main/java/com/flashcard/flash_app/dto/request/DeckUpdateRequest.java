@@ -5,7 +5,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -14,5 +15,5 @@ public class DeckUpdateRequest {
     String name;
     String description;
     int status;
-    LocalDateTime updated_at = LocalDateTime.now();
+    LocalDateTime updatedAt = LocalDateTime.now();
 }

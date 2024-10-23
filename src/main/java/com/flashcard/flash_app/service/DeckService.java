@@ -30,47 +30,47 @@ public class DeckService {
     UserRepository userRepository;
     DeckMapper deckMapper;
 
-    public DeckResponse createDeck(String user_id, DeckCreateRequest request) {
+    public DeckResponse createDeck(String userId, DeckCreateRequest request) {
         Deck deck = deckMapper.toDeck(request);
-        deck.setUser(userRepository.getById(user_id));
+        deck.setUser(userRepository.getById(userId));
         return deckMapper.toDeckResponse(deckRepository.save(deck));
     }
 
-    public DeckResponse getDeckById(String user_id, String deck_id) {
-        Deck deck = deckRepository.getDeckById(deck_id)
+    public DeckResponse getDeckById(String userId, String deckId) {
+        Deck deck = deckRepository.getDeckById(deckId)
                 .orElseThrow(() -> new RuntimeException("Deck not found"));
 
-        if (deck.getStatus() == 0 && !isAuthorized(user_id, deck_id)) {
+        if (deck.getStatus() == 0 && !isAuthorized(userId, deckId)) {
             throw new RuntimeException("Not authorized");
         }
         return deckMapper.toDeckResponse(deck);
     }
 
-    public List<DeckResponse> getAllDecks(String user_id) {
-        List<Deck> decks = deckRepository.findDecksByUser(userRepository.getById(user_id));
+    public List<DeckResponse> getAllDecks(String userId) {
+        List<Deck> decks = deckRepository.findDecksByUser(userRepository.getById(userId));
         return deckMapper.toDeckResponses(decks);
     }
 
-    public DeckResponse updateDeck(String user_id, String deck_id, DeckUpdateRequest request) {
-        if (!isAuthorized(user_id, deck_id)) {
+    public DeckResponse updateDeck(String userId, String deckId, DeckUpdateRequest request) {
+        if (!isAuthorized(userId, deckId)) {
             throw new RuntimeException("Not authorized");
         }
-        Deck deck = deckRepository.getDeckById(deck_id)
+        Deck deck = deckRepository.getDeckById(deckId)
                 .orElseThrow(() -> new RuntimeException("Deck not found"));
         deckMapper.updateDeck(deck, request);
         return deckMapper.toDeckResponse(deckRepository.save(deck));
     }
 
-    public void deleteDeck(String user_id, String deck_id) {
-        if (!isAuthorized(user_id, deck_id)) {
+    public void deleteDeck(String userId, String deckId) {
+        if (!isAuthorized(userId, deckId)) {
             throw new RuntimeException("Not authorized");
         }
-        deckRepository.deleteById(deck_id);
+        deckRepository.deleteById(deckId);
     }
 
-    private boolean isAuthorized(String user_id, String deck_id) {
-        Deck deck = deckRepository.getById(deck_id);
-        return deck.getUser().getId().equals(user_id);
+    private boolean isAuthorized(String userId, String deckId) {
+        Deck deck = deckRepository.getById(deckId);
+        return deck.getUser().getId().equals(userId);
     }
 
 }

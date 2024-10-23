@@ -5,13 +5,14 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CardUpdateRequest {
-    String front_text;
-    String back_text;
-    LocalDateTime updated_at = LocalDateTime.now();
+    String frontText;
+    String backText;
+    LocalDateTime updatedAt = LocalDateTime.now();
 }

@@ -8,7 +8,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,7 +25,7 @@ public class UserCreationRequest {
     @Size(min = 8, message = "PASSWORD_INVALID")
     String password;
 
-    LocalDateTime created_at = LocalDateTime.now();
-    LocalDateTime updated_at = LocalDateTime.now();
+    LocalDateTime createdAt = LocalDateTime.now();
+    LocalDateTime updatedAt = LocalDateTime.now();
 
 }

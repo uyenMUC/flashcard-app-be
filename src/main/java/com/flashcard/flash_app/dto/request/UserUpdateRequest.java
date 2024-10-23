@@ -6,7 +6,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -14,5 +15,5 @@ import java.time.LocalDateTime;
 public class UserUpdateRequest {
     String username;
     String password;
-    LocalDateTime updated_at = LocalDateTime.now();
+    LocalDateTime updatedAt = LocalDateTime.now();
 }

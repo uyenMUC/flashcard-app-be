@@ -2,8 +2,6 @@ package com.flashcard.flash_app.controller;
 
 import com.flashcard.flash_app.dto.request.*;
 import com.flashcard.flash_app.dto.response.DeckResponse;
-import com.flashcard.flash_app.dto.response.UserResponse;
-import com.flashcard.flash_app.entity.Deck;
 import com.flashcard.flash_app.service.DeckService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -27,19 +25,19 @@ public class DeckController {
     ApiResponse<DeckResponse> createDeck(@RequestBody @Valid DeckCreateRequest request) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-        String user_id = oauthToken.getToken().getClaim("user_id");
+        String userId = oauthToken.getToken().getClaim("user_id");
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(deckService.createDeck(user_id, request));
+        apiResponse.setResult(deckService.createDeck(userId, request));
         return apiResponse;
     }
 
-    @GetMapping("/{deck_id}")
-    ApiResponse<DeckResponse> getDeckById(@PathVariable String deck_id) {
+    @GetMapping("/{deckId}")
+    ApiResponse<DeckResponse> getDeckById(@PathVariable String deckId) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-        String user_id = oauthToken.getToken().getClaim("user_id");
+        String userId = oauthToken.getToken().getClaim("user_id");
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(deckService.getDeckById(user_id, deck_id));
+        apiResponse.setResult(deckService.getDeckById(userId, deckId));
         return apiResponse;
     }
 
@@ -47,28 +45,28 @@ public class DeckController {
     ApiResponse<List<DeckResponse>> getAllDecks() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-        String user_id = oauthToken.getToken().getClaim("user_id");
+        String userId = oauthToken.getToken().getClaim("user_id");
         ApiResponse<List<DeckResponse>> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(deckService.getAllDecks(user_id));
+        apiResponse.setResult(deckService.getAllDecks(userId));
         return apiResponse;
     }
 
-    @PutMapping("/{deck_id}")
-    ApiResponse<DeckResponse> updateDeck(@PathVariable String deck_id, @RequestBody DeckUpdateRequest request) {
+    @PutMapping("/{deckId}")
+    ApiResponse<DeckResponse> updateDeck(@PathVariable String deckId, @RequestBody DeckUpdateRequest request) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-        String user_id = oauthToken.getToken().getClaim("user_id");
+        String userId = oauthToken.getToken().getClaim("user_id");
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(deckService.updateDeck(user_id, deck_id, request));
+        apiResponse.setResult(deckService.updateDeck(userId, deckId, request));
         return apiResponse;
     }
 
-    @DeleteMapping("/{deck_id}")
-    ApiResponse deleteUser(@PathVariable String deck_id) {
+    @DeleteMapping("/{deckId}")
+    ApiResponse deleteUser(@PathVariable String deckId) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-        String user_id = oauthToken.getToken().getClaim("user_id");
-        deckService.deleteDeck(user_id, deck_id);
+        String userId = oauthToken.getToken().getClaim("user_id");
+        deckService.deleteDeck(userId, deckId);
         ApiResponse<DeckResponse> apiResponse = new ApiResponse<>();
         return apiResponse.builder()
                 .code(1000)

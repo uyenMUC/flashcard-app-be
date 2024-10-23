@@ -28,9 +28,9 @@ public class RatingService {
     RatingRepository ratingRepository;
     DeckMapper deckMapper;
 
-    public DeckResponse rateDeck(String user_id, String deck_id, RatingRequest request) {
-        Deck deck = deckRepository.getById(deck_id);
-        User user = userRepository.getById(user_id);
+    public DeckResponse rateDeck(String userId, String deckId, RatingRequest request) {
+        Deck deck = deckRepository.getById(deckId);
+        User user = userRepository.getById(userId);
         if (deck == null || deck.getStatus() == 0)
             throw new AppException(ErrorCode.RATE_DECK_PRIVATE);
         Rating rating = ratingRepository.findByDeckAndUser(deck, user);

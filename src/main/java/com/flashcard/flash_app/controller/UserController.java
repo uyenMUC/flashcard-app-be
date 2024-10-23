@@ -1,10 +1,8 @@
 package com.flashcard.flash_app.controller;
 
-import ch.qos.logback.classic.Logger;
 import com.flashcard.flash_app.dto.request.ApiResponse;
 import com.flashcard.flash_app.dto.request.UserCreationRequest;
 import com.flashcard.flash_app.dto.request.UserUpdateRequest;
-import com.flashcard.flash_app.dto.response.DeckResponse;
 import com.flashcard.flash_app.dto.response.UserResponse;
 import com.flashcard.flash_app.entity.User;
 import com.flashcard.flash_app.service.UserService;
@@ -12,8 +10,6 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.flogger.Flogger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -39,18 +35,18 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{user_id}")
-    UserResponse getUser(@PathVariable String user_id) {
-        return userService.getUser(user_id);
+    @GetMapping("/{userId}")
+    UserResponse getUser(@PathVariable String userId) {
+        return userService.getUser(userId);
     }
 
     @GetMapping()
     ApiResponse<UserResponse> getUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-        String user_id = oauthToken.getToken().getClaim("user_id");
+        String userId = oauthToken.getToken().getClaim("userId");
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(userService.getUser(user_id));
+        apiResponse.setResult(userService.getUser(userId));
         return apiResponse;
     }
 
@@ -58,9 +54,9 @@ public class UserController {
     ApiResponse<UserResponse> updateUser(@RequestBody UserUpdateRequest request) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-        String user_id = oauthToken.getToken().getClaim("user_id");
+        String userId = oauthToken.getToken().getClaim("userId");
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(userService.updateUser(user_id, request));
+        apiResponse.setResult(userService.updateUser(userId, request));
         return apiResponse;
     }
 
@@ -68,9 +64,8 @@ public class UserController {
     String deleteUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-        String user_id = oauthToken.getToken().getClaim("user_id");
-        userService.deleteUser(user_id);
+        String userId = oauthToken.getToken().getClaim("userId");
+        userService.deleteUser(userId);
         return "User has been deleted!";
     }
-
 }

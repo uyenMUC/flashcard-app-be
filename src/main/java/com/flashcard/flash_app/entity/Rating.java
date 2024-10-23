@@ -1,12 +1,11 @@
 package com.flashcard.flash_app.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Rating {

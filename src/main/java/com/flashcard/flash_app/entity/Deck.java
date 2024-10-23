@@ -10,7 +10,8 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Deck {
@@ -22,8 +23,8 @@ public class Deck {
     float rate = 0.0F;
     Long numOfRatings = 0L;
     int status = 0; // 0: private, 1: public
-    LocalDateTime created_at;
-    LocalDateTime updated_at;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
 
     @ManyToOne
