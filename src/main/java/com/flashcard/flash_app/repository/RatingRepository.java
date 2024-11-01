@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, String> {
     Rating findByDeckAndUser(Deck deck, User user);
-
     @Query(value = """
        select 
         new com.flashcard.flash_app.query.RatingInfo(count(*), sum(r.rateValue))
